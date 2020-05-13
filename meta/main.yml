@@ -1,0 +1,32 @@
+---
+galaxy_info:
+  role_name: letsencrypt
+  author: inmotionhosting
+  description: Modular Ansible Role for deploying and configuring Let's Encrypt
+  company: InMotion Hosting
+  license: GPLv3
+  min_ansible_version: 2.8
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+        - 8
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+
+  galaxy_tags:
+    - certificates
+    - encryption
+    - letsencrypt
+    - security
+    - ssl
+    - tls
+
+dependencies: []

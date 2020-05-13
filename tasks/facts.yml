@@ -1,0 +1,22 @@
+---
+- name: (Debian) Include os_family vars
+  include_vars: Debian.yml
+  when:
+    - ansible_os_family == "Debian"
+    - use_letsencrypt is defined
+    - use_letsencrypt
+
+- name: (Let's Encrypt) Set and sanitize facts
+  set_fact:
+    certbot_package: >-
+      {{ certbot_package
+      if certbot_package is defined
+      and certbot_package is string
+      and certbot_package != 0
+      else "certbot" }}
+    certbot_packages: >-
+      {{ certbot_packages
+      if certbot_packages is defined
+      and certbot_packages is iterable
+      and certbot_packages != 0
+      else "bind-utils" }}
