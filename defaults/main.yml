@@ -1,0 +1,24 @@
+---
+# defaults file for ansible-role-letsencrypt
+
+# The command to run to generate an SSL using certbot
+certbot_create_command: >-
+  {{ certbot_script }} certonly
+  --standalone
+  --noninteractive
+  --agree-tos
+  --email {{ site_email }}
+  -d {{ site_domain }}
+
+certbot_package: certbot
+
+certbot_packages:
+  - bind-utils
+
+# Whether a letsencrypt SSL should be generated.
+# By default, Let's Encrypt is disabled.
+use_letsencrypt: false
+
+# Default domain and email, replaced in deployment.
+site_domain: ""
+site_email: ""
