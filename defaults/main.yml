@@ -22,3 +22,6 @@ use_letsencrypt: false
 # Default domain and email, replaced in deployment.
 site_domain: ""
 site_email: ""
+
+cipher_size: 2048
+dh_path: /etc/ssl/dhparams.pem

@@ -44,3 +44,8 @@
     - certbot_stop_services is defined
     - certbot_stop_services | length > 0
   with_items: "{{ certbot_stop_services | unique }}"
+
+- name: (Let's Encrypt) Generate DH Parameters
+  openssl_dhparam:
+    path: "{{ dh_path }}"
+    size: "{{ cipher_size }}"
