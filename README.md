@@ -1,19 +1,22 @@
-inmotionhosting.letsencrypt
-=========
+[![Build Status](https://travis-ci.org/inmotionhosting/ansible-role-letsencrypt.png?branch=master)](https://travis-ci.org/inmotionhosting/ansible-role-letsencrypt) [![GPL-3.0 License](https://img.shields.io/github/license/inmotionhosting/ansible-role-letsencrypt.svg?color=blue)](https://github.com/inmotionhosting/ansible-role-letsencrypt/blob/master/LICENSE) [![GitHub stars](https://img.shields.io/github/stars/inmotionhosting/ansible-role-letsencrypt.svg)](https://github.com/inmotionhosting/ansible-role-letsencrypt/stargazers)
+
+# Ansible Role: Let's Encrypt
 
 Modular Ansible Role for deploying and configuring Let's Encrypt
 
-[![Build Status](https://travis-ci.org/inmotionhosting/ansible-role-letsencrypt.png?branch=master)](https://travis-ci.org/inmotionhosting/ansible-role-letsencrypt)
-
-Requirements
-------------
+## Requirements
 
 * CentOS 7.x or later
 * Debian 9 or later
-* Ubuntu 16.04.x LTS or later
+* Ubuntu 16.04 LTS or later
 
-Role Variables
---------------
+## Dependencies
+
+None.
+
+## Role Variables
+
+Available variables are listed below with their default values (you can also see `defaults/main.yml`)
 
 | Variable | Description |
 | -------- | ----------- |
@@ -22,24 +25,18 @@ Role Variables
 | certbot_create_command | The command ran to generate a certificate.
 | use_letsencrypt | Determines if Let's Encrypt should be installed/used.
 
-Dependencies
-------------
+## Example Playbook
 
-None.
+```yaml
+- hosts: www
+  roles:
+    - role: inmotionhosting.letsencrypt
+```
 
-Example Playbook
-----------------
-
-    - hosts: www
-      roles:
-         - role: inmotionhosting.letsencrypt
-
-License
--------
+## License
 
 GPLv3
 
-Author Information
-------------------
+## Author Information
 
 [InMotion Hosting](https://inmotionhosting.com)
