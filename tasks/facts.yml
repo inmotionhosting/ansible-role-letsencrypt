@@ -6,17 +6,24 @@
     - use_letsencrypt is defined
     - use_letsencrypt
 
-- name: (Let's Encrypt) Set and sanitize facts
-  set_fact:
-    certbot_package: >-
-      {{ certbot_package
-      if certbot_package is defined
-      and certbot_package is string
-      and certbot_package != 0
-      else "certbot" }}
-    certbot_packages: >-
-      {{ certbot_packages
-      if certbot_packages is defined
-      and certbot_packages is iterable
-      and certbot_packages != 0
-      else "bind-utils" }}
+- name: Check certbot_package
+  fail:
+    msg: |
+      Invalid value for variable for 'certbot_package': {{ certbot_package }}
+
+      Supported types  : String
+      Supported values : Any non-null string
+  when: >-
+    certbot_package is not string
+    or certbot_package == 0
+
+- name: Check certbot_packages
+  fail:
+    msg: |
+      Invalid value for variable for 'certbot_packages': {{ certbot_packages }}
+
+      Supported types  : String
+      Supported values : Any non-null string
+  when: >-
+    certbot_package is not iterable
+    or certbot_package == 0
