@@ -3,7 +3,7 @@
 
 # The command to run to generate an SSL using certbot
 certbot_create_command: >-
-  {{ certbot_script }} certonly
+  {{ certbot_package }} certonly
   --standalone
   --noninteractive
   --agree-tos
