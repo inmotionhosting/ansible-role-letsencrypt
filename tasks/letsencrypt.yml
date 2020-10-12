@@ -1,14 +1,10 @@
 ---
-- name: (Let's Encrypt) Install Certbot.
+- name: Install Certbot.
   package:
     name: "{{ certbot_package }}"
     state: present
 
-- name: (LetsEncrypt) Set Certbot script variable.
-  set_fact:
-    certbot_script: "{{ certbot_package }}"
-
-- name: (Let's Encrypt) Check if certificate already exists.
+- name: Check if certificate already exists.
   stat:
     path: "/etc/letsencrypt/live/{{ site_domain }}/cert.pem"
   register: letsencrypt_cert
@@ -16,7 +12,7 @@
     - site_domain is defined
     - site_domain | length > 0
 
-- name: (Let's Encrypt) Stop services to allow certbot to generate a cert.
+- name: Stop services to allow certbot to generate a cert.
   service:
     name: "{{ item }}"
     state: stopped
@@ -26,7 +22,7 @@
     - certbot_stop_services | length > 0
   with_items: "{{ certbot_stop_services | unique }}"
 
-- name: (Let's Encrypt) Generate new certificate if one doesn't exist.
+- name: Generate new certificate if one doesn't exist.
   command: "{{ certbot_create_command }}"
   when:
     - not letsencrypt_cert.stat.exists
@@ -35,7 +31,7 @@
     - site_email is defined
     - site_email | length > 0
 
-- name: (Let's Encrypt) Start services after cert has been generated.
+- name: Start services after cert has been generated.
   service:
     name: "{{ item }}"
     state: started
@@ -45,7 +41,7 @@
     - certbot_stop_services | length > 0
   with_items: "{{ certbot_stop_services | unique }}"
 
-- name: (Let's Encrypt) Generate DH Parameters
+- name: Generate DH Parameters
   openssl_dhparam:
     path: "{{ dh_path }}"
     size: "{{ cipher_size }}"

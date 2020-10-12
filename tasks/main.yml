@@ -1,10 +1,10 @@
 ---
 # tasks file for ansible-role-letsencrypt
 
-- name: (Let's Encrypt) Include variables and set facts
+- name: Include variables and set facts
   include: facts.yml
 
-- name: (Let's Encrypt) Install Let's Encrypt dependent packages
+- name: Install Let's Encrypt dependent packages
   package:
     name: "{{ certbot_packages }}"
     state: present
@@ -15,7 +15,7 @@
     - use_letsencrypt
 
 # If site_domain doesn't point to the target host, Let's Encrypt is skipped
-- name: (Let's Encrypt) Disable Let's Encrypt if DNS doesn't match
+- name: Disable Let's Encrypt if DNS doesn't match
   set_fact:
     use_letsencrypt: false
   changed_when: dns_ip not in host_ips
@@ -30,7 +30,7 @@
     - site_domain | length > 0
     - dns_ip not in host_ips
 
-- name: (Let's Encrypt) Use Let's Encrypt if specified
+- name: Use Let's Encrypt if specified
   include: "letsencrypt.yml"
   when:
     - not dns_check.changed
