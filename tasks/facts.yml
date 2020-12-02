@@ -22,8 +22,8 @@
     msg: |
       Invalid value for variable for 'certbot_packages': {{ certbot_packages }}
 
-      Supported types  : String
-      Supported values : Any non-null string
+      Supported types  : List, String
+      Supported values : Any non-null list or string
   when: >-
     certbot_package is not iterable
     or certbot_package == 0
