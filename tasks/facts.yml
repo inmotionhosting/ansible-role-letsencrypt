@@ -9,7 +9,7 @@
 - name: Check certbot_package
   fail:
     msg: |
-      Invalid value for variable for 'certbot_package': {{ certbot_package }}
+      Invalid value for 'certbot_package': {{ certbot_package }}
 
       Supported types  : String
       Supported values : Any non-null string
