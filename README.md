@@ -6,9 +6,9 @@ Modular Ansible Role for deploying and configuring Let's Encrypt
 
 ## Requirements
 
-* CentOS 7.x or later
-* Debian 9 or later
-* Ubuntu 16.04 LTS or later
+* CentOS 7 or 8
+* Debian 10 or 11
+* Ubuntu 18.04 or 20.04
 
 ## Dependencies
 
