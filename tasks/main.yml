@@ -30,6 +30,26 @@
     - site_domain | length > 0
     - dns_ip not in host_ips
 
+- name: Also retrieve certificate for www if DNS exists and matches
+  vars:
+    dns_ip: "{{ lookup('dig', 'www.' ~ site_domain) }}"
+    host_ips: "{{ ansible_all_ipv4_addresses }}"
+  set_fact:
+    certbot_create_command: >-
+      {{ certbot_package }} certonly
+      --standalone
+      --noninteractive
+      --agree-tos
+      --email {{ site_email }}
+      -d {{ site_domain ~ "," ~ "www." ~ site_domain }}
+  when:
+    - use_letsencrypt is defined
+    - use_letsencrypt
+    - site_domain is defined
+    - site_domain | length > 0
+    - dns_ip in host_ips
+    - not dns_check.changed
+
 - name: Use Let's Encrypt if specified
   include: "letsencrypt.yml"
   when:
