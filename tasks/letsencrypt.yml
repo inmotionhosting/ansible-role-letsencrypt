@@ -45,3 +45,16 @@
   openssl_dhparam:
     path: "{{ dh_path }}"
     size: "{{ cipher_size }}"
+
+- name: Creates a cron to renew letsencrypt certificates
+  ansible.builtin.cron:
+    name: letsencrypt cert renewal
+    weekday: "0"
+    minute: "0"
+    hour: "1"
+    user: root
+    job: >-
+      certbot renew 
+      --pre-hook '/usr/bin/monit unmonitor nginx; systemctl stop nginx' 
+      --post-hook 'systemctl start nginx; /usr/bin/monit monitor nginx'
+    cron_file: certbot
