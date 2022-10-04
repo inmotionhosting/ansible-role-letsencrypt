@@ -20,7 +20,7 @@
     - not letsencrypt_cert.stat.exists
     - certbot_stop_services is defined
     - certbot_stop_services | length > 0
-  with_items: "{{ certbot_stop_services | unique }}"
+  with_items: "{{ certbot_stop_services | unique | sort }}"
 
 - name: Generate new certificate if one doesn't exist.
   command: "{{ certbot_create_command }}"
