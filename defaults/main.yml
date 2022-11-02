@@ -9,6 +9,7 @@ certbot_create_command: >-
   --agree-tos
   --email {{ site_email }}
   -d {{ site_domain }}
+  {% if certbot_test_cert|bool %}--test-cert{% endif %}
 
 certbot_package: certbot
 
