@@ -16,7 +16,7 @@ certbot_package: certbot
 certbot_packages:
   - bind-utils
 
-cerbot_test_cert: false
+certbot_test_cert: false
 
 # Whether a letsencrypt SSL should be generated.
 # By default, Let's Encrypt is disabled.
