@@ -40,8 +40,8 @@
       --standalone
       --noninteractive
       --agree-tos
-      --email {{ site_email }}
       -d {{ site_domain ~ "," ~ "www." ~ site_domain }}
+      --register-unsafely-without-email
       {% if certbot_test_cert|bool %}--test-cert{% endif %}
   when:
     - use_letsencrypt is defined
