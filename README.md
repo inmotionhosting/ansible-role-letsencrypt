@@ -24,6 +24,8 @@ Available variables are listed below with their default values (you can also see
 | certbot_packages | Tools needed to verify if the usage of Let's Encrypt is valid.
 | certbot_create_command | The command ran to generate a certificate.
 | use_letsencrypt | Determines if Let's Encrypt should be installed/used.
+| certbot_test_cert | Use Letsencrypt Staging Environment
+| certbot_without_email | Register Letsencrypt account without an email
 
 ## Example Playbook
 

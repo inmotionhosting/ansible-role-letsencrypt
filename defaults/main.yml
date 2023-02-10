@@ -7,7 +7,7 @@ certbot_create_command: >-
   --standalone
   --noninteractive
   --agree-tos
-  --email {{ site_email }}
+  {% if certbot_without_email %}--register-unsafely-without-email{% else %}--email {{ site_email }}{% endif %}
   -d {{ site_domain }}
   {% if certbot_test_cert|bool %}--test-cert{% endif %}
 
@@ -17,6 +17,7 @@ certbot_packages:
   - bind-utils
 
 certbot_test_cert: false
+certbot_without_email: false
 
 # Whether a letsencrypt SSL should be generated.
 # By default, Let's Encrypt is disabled.
