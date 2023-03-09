@@ -8,7 +8,7 @@ on:
 
 jobs: 
   test:
-    runs-on: centos-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
