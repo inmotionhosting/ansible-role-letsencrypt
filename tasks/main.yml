@@ -40,6 +40,8 @@
       --standalone
       --noninteractive
       --agree-tos
+      --cert-name {{ site_domain }}
+      --allow-subset-of-names
       {% if certbot_without_email | bool %}--register-unsafely-without-email{% else %}--email {{ site_email }}{% endif %}
       -d {{ site_domain ~ "," ~ "www." ~ site_domain }}
       {% if certbot_test_cert|bool %}--test-cert{% endif %}
