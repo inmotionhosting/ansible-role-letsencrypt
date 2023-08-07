@@ -1,13 +1,13 @@
 ---
 - name: (Debian) Include os_family vars
-  include_vars: Debian.yml
+  ansible.builtin.include_vars: Debian.yml
   when:
     - ansible_os_family == "Debian"
     - use_letsencrypt is defined
     - use_letsencrypt
 
 - name: Check certbot_package
-  fail:
+  ansible.builtin.fail:
     msg: |
       Invalid value for 'certbot_package': {{ certbot_package }}
 
@@ -18,7 +18,7 @@
     or certbot_package == 0
 
 - name: Check certbot_packages
-  fail:
+  ansible.builtin.fail:
     msg: |
       Invalid value for variable for 'certbot_packages': {{ certbot_packages }}
 
