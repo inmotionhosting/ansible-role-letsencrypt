@@ -1,0 +1,4 @@
+# This file contains ignores rule violations for ansible-lint
+.github/workflows/main.yml yaml[truthy]
+defaults/main.yml jinja[spacing]
+tasks/letsencrypt.yml no-changed-when

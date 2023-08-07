@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/inmotionhosting/ansible-role-letsencrypt.png?branch=master)](https://travis-ci.org/inmotionhosting/ansible-role-letsencrypt) [![GPL-3.0 License](https://img.shields.io/github/license/inmotionhosting/ansible-role-letsencrypt.svg?color=blue)](https://github.com/inmotionhosting/ansible-role-letsencrypt/blob/master/LICENSE) [![GitHub stars](https://img.shields.io/github/stars/inmotionhosting/ansible-role-letsencrypt.svg)](https://github.com/inmotionhosting/ansible-role-letsencrypt/stargazers)
+![Ansible Molecule Pipeline](https://github.com/inmotionhosting/ansible-role-letsencrypt/actions/workflows/main.yml/badge.svg) [![GPL-3.0 License](https://img.shields.io/github/license/inmotionhosting/ansible-role-letsencrypt.svg?color=blue)](https://github.com/inmotionhosting/ansible-role-letsencrypt/blob/master/LICENSE) [![GitHub stars](https://img.shields.io/github/stars/inmotionhosting/ansible-role-letsencrypt.svg)](https://github.com/inmotionhosting/ansible-role-letsencrypt/stargazers)
 
 # Ansible Role: Let's Encrypt
 
@@ -12,7 +12,7 @@ Modular Ansible Role for deploying and configuring Let's Encrypt
 
 ## Dependencies
 
-None.
+community.crypto
 
 ## Role Variables
 

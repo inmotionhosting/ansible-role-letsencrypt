@@ -2,10 +2,10 @@
 # tasks file for ansible-role-letsencrypt
 
 - name: Include variables and set facts
-  include: facts.yml
+  ansible.builtin.include_tasks: facts.yml
 
 - name: Install Let's Encrypt dependent packages
-  package:
+  ansible.builtin.package:
     name: "{{ certbot_packages }}"
     state: present
   when:
@@ -16,7 +16,7 @@
 
 # If site_domain doesn't point to the target host, Let's Encrypt is skipped
 - name: Disable Let's Encrypt if DNS doesn't match
-  set_fact:
+  ansible.builtin.set_fact:
     use_letsencrypt: false
   changed_when: dns_ip not in host_ips
   register: dns_check
@@ -34,7 +34,7 @@
   vars:
     dns_ip: "{{ lookup('dig', 'www.' ~ site_domain) }}"
     host_ips: "{{ ansible_all_ipv4_addresses }}"
-  set_fact:
+  ansible.builtin.set_fact:
     certbot_create_command: >-
       {{ certbot_package }} certonly
       --standalone
@@ -54,7 +54,7 @@
     - not dns_check.changed
 
 - name: Use Let's Encrypt if specified
-  include: "letsencrypt.yml"
+  ansible.builtin.include_tasks: "letsencrypt.yml"
   when:
     - not dns_check.changed
     - use_letsencrypt is defined

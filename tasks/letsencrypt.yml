@@ -1,11 +1,11 @@
 ---
 - name: Install Certbot.
-  package:
+  ansible.builtin.package:
     name: "{{ certbot_package }}"
     state: present
 
 - name: Check if certificate already exists.
-  stat:
+  ansible.builtin.stat:
     path: "/etc/letsencrypt/live/{{ site_domain }}/cert.pem"
   register: letsencrypt_cert
   when:
@@ -13,7 +13,7 @@
     - site_domain | length > 0
 
 - name: Stop services to allow certbot to generate a cert.
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: stopped
   when:
@@ -23,14 +23,14 @@
   with_items: "{{ certbot_stop_services | unique | sort }}"
 
 - name: Generate new certificate if one doesn't exist.
-  command: "{{ certbot_create_command }}"
+  ansible.builtin.command: "{{ certbot_create_command }}"
   when:
     - not letsencrypt_cert.stat.exists
     - site_domain is defined
     - site_domain | length > 0
 
 - name: Start services after cert has been generated.
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: started
   when:
@@ -40,7 +40,7 @@
   with_items: "{{ certbot_stop_services | unique }}"
 
 - name: Generate DH Parameters
-  openssl_dhparam:
+  community.crypto.openssl_dhparam:
     path: "{{ dh_path }}"
     size: "{{ cipher_size }}"
 
@@ -52,7 +52,7 @@
     hour: "1"
     user: root
     job: >-
-      certbot renew 
-      --pre-hook '/usr/bin/monit unmonitor nginx; systemctl stop nginx' 
+      certbot renew
+      --pre-hook '/usr/bin/monit unmonitor nginx; systemctl stop nginx'
       --post-hook 'systemctl start nginx; /usr/bin/monit monitor nginx'
     cron_file: certbot
