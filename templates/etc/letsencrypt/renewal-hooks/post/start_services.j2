@@ -1,0 +1,6 @@
+#!/bin/bash
+# {{ ansible_managed }}
+
+{% for item in certbot_stop_services %}
+systemctl start {{ item }}
+{% endfor %}
