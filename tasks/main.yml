@@ -46,7 +46,7 @@
       -d {{ site_domain ~ "," ~ "www." ~ site_domain }}
       {% if certbot_test_cert|bool %}--test-cert{% endif %}
       --pre-hook /etc/letsencrypt/renewal-hooks/pre/stop_services
-      --post-hook /etc/letsencrypt/renewal-hooks/pre/start_services
+      --post-hook /etc/letsencrypt/renewal-hooks/post/start_services
   when:
     - use_letsencrypt is defined
     - use_letsencrypt
