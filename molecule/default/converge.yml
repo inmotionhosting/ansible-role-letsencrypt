@@ -11,6 +11,3 @@
 
   roles:
     - role: ansible-role-letsencrypt
-      vars:
-        site_domain: example.com
-        use_letsencrypt: true
