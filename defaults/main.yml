@@ -11,7 +11,7 @@ certbot_create_command: >-
   --allow-subset-of-names
   {% if certbot_without_email %}--register-unsafely-without-email{% else %}--email {{ site_email }}{% endif %}
   -d {{ site_domain }}
-  {% if certbot_test_cert|bool %}--test-cert{% endif %}
+  {% if certbot_test_cert | bool %}--test-cert{% endif %}
 
 certbot_package: certbot
 
