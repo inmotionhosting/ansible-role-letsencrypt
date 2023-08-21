@@ -12,15 +12,38 @@
     - site_domain is defined
     - site_domain | length > 0
 
-- name: Stop services to allow certbot to generate a cert.
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: stopped
+- name: Ensure pre and post hook folders exist.
+  ansible.builtin.file:
+    path: /etc/letsencrypt/renewal-hooks/{{ item }}
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+  with_items:
+    - pre
+    - post
+
+- name: Create pre hook to stop services.
+  ansible.builtin.template:
+    src: etc/letsencrypt/renewal-hooks/pre/stop_services.j2
+    dest: /etc/letsencrypt/renewal-hooks/pre/stop_services
+    owner: root
+    group: root
+    mode: "0750"
   when:
-    - not letsencrypt_cert.stat.exists
     - certbot_stop_services is defined
-    - certbot_stop_services | length > 0
-  with_items: "{{ certbot_stop_services | unique | sort }}"
+    - certbot_stop_services
+
+- name: Create post hook to start services.
+  ansible.builtin.template:
+    src: etc/letsencrypt/renewal-hooks/post/start_services.j2
+    dest: /etc/letsencrypt/renewal-hooks/post/start_services
+    owner: root
+    group: root
+    mode: "0750"
+  when:
+    - certbot_stop_services is defined
+    - certbot_stop_services
 
 - name: Generate new certificate if one doesn't exist.
   ansible.builtin.command: "{{ certbot_create_command }}"
@@ -29,16 +52,6 @@
     - site_domain is defined
     - site_domain | length > 0
   changed_when: false
-
-- name: Start services after cert has been generated.
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: started
-  when:
-    - not letsencrypt_cert.stat.exists
-    - certbot_stop_services is defined
-    - certbot_stop_services | length > 0
-  with_items: "{{ certbot_stop_services | unique }}"
 
 - name: Generate DH Parameters
   community.crypto.openssl_dhparam:
@@ -54,6 +67,6 @@
     user: root
     job: >-
       certbot renew
-      --pre-hook '/usr/bin/monit unmonitor nginx; systemctl stop nginx'
-      --post-hook 'systemctl start nginx; /usr/bin/monit monitor nginx'
+      --pre-hook /etc/letsencrypt/renewal-hooks/pre/stop_services
+      --post-hook /etc/letsencrypt/renewal-hooks/post/start_services
     cron_file: certbot
