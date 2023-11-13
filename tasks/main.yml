@@ -14,22 +14,6 @@
     - use_letsencrypt is defined
     - use_letsencrypt
 
-# If site_domain doesn't point to the target host, Let's Encrypt is skipped
-- name: Disable Let's Encrypt if DNS doesn't match
-  ansible.builtin.set_fact:
-    use_letsencrypt: false
-  changed_when: dns_ip not in host_ips
-  register: dns_check
-  vars:
-    dns_ip: "{{ lookup('dig', site_domain, retry_servfail=true) }}"
-    host_ips: "{{ ansible_all_ipv4_addresses }}"
-  when:
-    - use_letsencrypt is defined
-    - use_letsencrypt
-    - site_domain is defined
-    - site_domain | length > 0
-    - dns_ip not in host_ips
-
 - name: Also retrieve certificate for www if DNS exists and matches
   vars:
     dns_ip: "{{ lookup('dig', 'www.' ~ site_domain) }}"
@@ -58,6 +42,5 @@
 - name: Use Let's Encrypt if specified
   ansible.builtin.include_tasks: "letsencrypt.yml"
   when:
-    - not dns_check.changed
     - use_letsencrypt is defined
     - use_letsencrypt
