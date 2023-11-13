@@ -21,7 +21,7 @@
   changed_when: dns_ip not in host_ips
   register: dns_check
   vars:
-    dns_ip: "{{ lookup('dig', site_domain) }}"
+    dns_ip: "{{ lookup('dig', site_domain, retry_servfail=true) }}"
     host_ips: "{{ ansible_all_ipv4_addresses }}"
   when:
     - use_letsencrypt is defined
