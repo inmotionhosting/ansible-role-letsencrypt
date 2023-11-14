@@ -11,6 +11,7 @@
   when:
     - site_domain is defined
     - site_domain | length > 0
+  tags: always
 
 - name: Ensure pre and post hook folders exist.
   ansible.builtin.file:
@@ -46,6 +47,7 @@
     - certbot_stop_services
 
 - name: Issue certificate or set use_letsencrypt=false
+  tags: always
   block:
     - name: Generate new certificate if one doesn't exist.
       ansible.builtin.command: "{{ certbot_create_command }}"
@@ -58,6 +60,7 @@
     - name: Disable Let's Encrypt if unable to issue cert
       ansible.builtin.set_fact:
         use_letsencrypt: false
+
 
 - name: Generate DH Parameters
   community.crypto.openssl_dhparam:
