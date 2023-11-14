@@ -61,7 +61,6 @@
       ansible.builtin.set_fact:
         use_letsencrypt: false
 
-
 - name: Generate DH Parameters
   community.crypto.openssl_dhparam:
     path: "{{ dh_path }}"
