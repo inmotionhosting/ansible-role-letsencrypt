@@ -46,7 +46,45 @@
     - certbot_stop_services is defined
     - certbot_stop_services
 
-- name: Issue certificate or set use_letsencrypt=false
+- name: Generate Self-signed Certificate if no certificate exists
+  when:
+    - not letsencrypt_cert.stat.exists
+  block:
+    - name: Ensure directory exists for local self-signed TLS certs.
+      ansible.builtin.file:
+        path: /etc/letsencrypt/live/{{ site_domain }}
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Generate an OpenSSL private key.
+      community.crypto.openssl_privatekey:
+        path: /etc/letsencrypt/live/{{ site_domain }}/privkey.pem
+
+    - name: Generate an OpenSSL CSR.
+      community.crypto.openssl_csr:
+        path: /etc/pki/tls/private/{{ site_domain }}.csr
+        privatekey_path: /etc/letsencrypt/live/{{ site_domain }}/privkey.pem
+        common_name: "{{ site_domain }}"
+
+    - name: Generate a Self Signed OpenSSL certificate.
+      community.crypto.x509_certificate:
+        path: /etc/letsencrypt/live/{{ site_domain }}/cert.pem
+        privatekey_path: /etc/letsencrypt/live/{{ site_domain }}/privkey.pem
+        csr_path: /etc/pki/tls/private/{{ site_domain }}.csr
+        provider: selfsigned
+
+- name: Get certificate information
+  community.crypto.x509_certificate_info:
+    path: "/etc/letsencrypt/live/{{ site_domain }}/cert.pem"
+  register: cert_info
+
+- name: Check if cert is self-signed
+  ansible.builtin.set_fact:
+    is_self_signed: "{{ cert_info.issuer.commonName == cert_info.subject.commonName }}"
+
+- name: Issue certificate
   tags: always
   block:
     - name: Generate new certificate if one doesn't exist.
@@ -56,10 +94,16 @@
         - site_domain is defined
         - site_domain | length > 0
       changed_when: false
+      register: certbot_result
   rescue:
-    - name: Disable Let's Encrypt if unable to issue cert
+    - name: Display debug statement
+      ansible.builtin.debug:
+        msg: Unable to issue Let's Encrypt certificate
+
+    - name: Update is_self_signed fact to be false if certbot succeeds
       ansible.builtin.set_fact:
-        use_letsencrypt: false
+        is_self_signed: false
+      when: cerbot_result.rc == 0
 
 - name: Generate DH Parameters
   community.crypto.openssl_dhparam:
