@@ -103,7 +103,7 @@
     - name: Update is_self_signed fact to be false if certbot succeeds
       ansible.builtin.set_fact:
         is_self_signed: false
-      when: certbot_result.rc == 0
+      when: cerbot_result.rc == 0
 
 - name: Generate DH Parameters
   community.crypto.openssl_dhparam:
