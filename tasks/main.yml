@@ -14,30 +14,6 @@
     - use_letsencrypt is defined
     - use_letsencrypt
 
-- name: Also retrieve certificate for www if DNS exists and matches
-  vars:
-    dns_ip: "{{ lookup('dig', 'www.' ~ site_domain) }}"
-    host_ips: "{{ ansible_all_ipv4_addresses }}"
-  ansible.builtin.set_fact:
-    certbot_create_command: >-
-      {{ certbot_package }} certonly
-      --standalone
-      --noninteractive
-      --agree-tos
-      --cert-name {{ site_domain }}
-      --allow-subset-of-names
-      {% if certbot_without_email | bool %}--register-unsafely-without-email{% else %}--email {{ site_email }}{% endif %}
-      -d {{ site_domain ~ "," ~ "www." ~ site_domain }}
-      {% if certbot_test_cert|bool %}--test-cert{% endif %}
-      --pre-hook /etc/letsencrypt/renewal-hooks/pre/stop_services
-      --post-hook /etc/letsencrypt/renewal-hooks/post/start_services
-  when:
-    - use_letsencrypt is defined
-    - use_letsencrypt
-    - site_domain is defined
-    - site_domain | length > 0
-    - dns_ip in host_ips
-
 - name: Use Let's Encrypt if specified
   ansible.builtin.include_tasks: "letsencrypt.yml"
   when:
