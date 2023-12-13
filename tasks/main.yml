@@ -3,6 +3,7 @@
 
 - name: Include variables and set facts
   ansible.builtin.include_tasks: facts.yml
+  tags: siteurl
 
 - name: Install Let's Encrypt dependent packages
   ansible.builtin.package:
@@ -19,3 +20,4 @@
   when:
     - use_letsencrypt is defined
     - use_letsencrypt
+  tags: siteurl
