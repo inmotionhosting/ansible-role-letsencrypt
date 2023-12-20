@@ -47,7 +47,7 @@
     - certbot_stop_services
 
 - name: Issue certificate or set use_letsencrypt=false
-  tags: siteurl
+  tags: siteurl, profile
   block:
     - name: Generate new certificate if one doesn't exist.
       ansible.builtin.command: "{{ certbot_create_command }}"
