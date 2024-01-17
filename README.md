@@ -1,5 +1,7 @@
 ![Ansible Molecule Pipeline](https://github.com/inmotionhosting/ansible-role-letsencrypt/actions/workflows/main.yml/badge.svg) [![GPL-3.0 License](https://img.shields.io/github/license/inmotionhosting/ansible-role-letsencrypt.svg?color=blue)](https://github.com/inmotionhosting/ansible-role-letsencrypt/blob/master/LICENSE) [![GitHub stars](https://img.shields.io/github/stars/inmotionhosting/ansible-role-letsencrypt.svg)](https://github.com/inmotionhosting/ansible-role-letsencrypt/stargazers)
 
+![InMotion Hosting Ultrastack](https://www.inmotionhosting.com/wp-content/uploads/2024/01/ultrastack-logo-black-vertical.png)
+
 # Ansible Role: Let's Encrypt
 
 Modular Ansible Role for deploying and configuring Let's Encrypt
