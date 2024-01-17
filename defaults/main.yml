@@ -10,7 +10,7 @@ certbot_create_command: >-
   --cert-name {{ site_domain }}
   --allow-subset-of-names
   {% if certbot_without_email %}--register-unsafely-without-email{% else %}--email {{ site_email }}{% endif %}
-  -d {{ site_domain }}{% if not site_domain.startswith('www') %},www.{{ site_domain }}{% endif %}
+  -d {{ site_domain }}{% if not site_domain.startswith('www') %},www.{{ site_domain }}{% else %}{{ site_domain[4:] }}{% endif %}
   {% if certbot_test_cert | bool %}--test-cert{% endif %}
   --pre-hook /etc/letsencrypt/renewal-hooks/pre/stop_services
   --post-hook /etc/letsencrypt/renewal-hooks/post/start_services
