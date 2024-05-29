@@ -5,6 +5,12 @@
   ansible.builtin.include_tasks: facts.yml
   tags: siteurl, profile
 
+- name: (RedHat) Install epel-release packages
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+  when: ansible_os_family == "RedHat"
+
 - name: Install Let's Encrypt dependent packages
   ansible.builtin.package:
     name: "{{ certbot_packages }}"
